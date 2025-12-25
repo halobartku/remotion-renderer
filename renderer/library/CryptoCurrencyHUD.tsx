@@ -2,124 +2,173 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME, STYLES } from './theme';
+
+type TickerItem = { symbol: string; price: string; change: string; isUp: boolean };
 
 type CryptoCurrencyHUDProps = {
-    type: 'token' | 'fiat_stack' | 'wallet_hex' | 'gold_bar' | 'security_shield';
-    symbol?: 'BTC' | 'ETH' | 'SOL' | 'USD';
-    amount?: number;
-    color?: string; // Override default colors
+    primaryAsset?: {
+        name: string;
+        symbol: string;
+        price: string;
+        change24h: string;
+        isUp: boolean;
+        marketCap?: string;
+        volume?: string;
+    };
+    tickerItems?: TickerItem[];
+    showTicker?: boolean;
+    showCard?: boolean;
 };
 
+// Default Dummy Data
+const DEFAULT_TICKERS: TickerItem[] = [
+    { symbol: 'BTC', price: '$64,230', change: '+2.4%', isUp: true },
+    { symbol: 'ETH', price: '$3,450', change: '+1.2%', isUp: true },
+    { symbol: 'SOL', price: '$145', change: '-0.5%', isUp: false },
+    { symbol: 'XRP', price: '$0.62', change: '+0.1%', isUp: true },
+    { symbol: 'ADA', price: '$0.45', change: '-1.2%', isUp: false },
+    { symbol: 'DOT', price: '$7.20', change: '+0.8%', isUp: true },
+    { symbol: 'AVAX', price: '$38.50', change: '-2.1%', isUp: false },
+];
+
 export const CryptoCurrencyHUD: React.FC<CryptoCurrencyHUDProps> = ({
-    type = 'token',
-    symbol = 'BTC',
-    amount = 1,
-    color
+    primaryAsset = { name: 'Bitcoin', symbol: 'BTC', price: '$64,230.50', change24h: '+2.45%', isUp: true, marketCap: '$1.2T', volume: '$35B' },
+    tickerItems = DEFAULT_TICKERS,
+    showTicker = true,
+    showCard = true
 }) => {
     const frame = useCurrentFrame();
-    const { fps } = useVideoConfig();
+    const { fps, width, height } = useVideoConfig();
+
+    // Refs for animations
     const container = useRef(null);
-    const elementRef = useRef<HTMLDivElement>(null);
+    const tickerRef = useRef(null);
+    const cardRef = useRef(null);
     const tl = useRef<gsap.core.Timeline | null>(null);
 
     useGSAP(() => {
         tl.current = gsap.timeline({ paused: true });
 
-        // --- TOKEN (3D Coin Spin) ---
-        if (type === 'token') {
-            const coinColor = color || (symbol === 'BTC' ? '#f7931a' : symbol === 'ETH' ? '#627eea' : '#14f195');
-            tl.current.fromTo(elementRef.current,
-                { rotationY: -180, scale: 0, opacity: 0 },
-                { rotationY: 0, scale: 1, opacity: 1, duration: 1.5, ease: 'back.out(1.2)' }
-            );
-            // Continuous float
-            tl.current.to(elementRef.current, { y: -20, duration: 2, yoyo: true, repeat: -1, ease: 'sine.inOut' });
-        }
+        // 1. Ticker Slide In
+        if (showTicker) {
+            tl.current.from(tickerRef.current, { y: 100, opacity: 0, duration: 1, ease: 'power3.out' }, 0);
 
-        // --- FIAT STACK (Growing Pile) ---
-        else if (type === 'fiat_stack') {
-            // Animate height of stack
-            const targets = elementRef.current ? Array.from(elementRef.current.children) : [];
-            if (targets.length > 0) {
-                tl.current.from(targets, {
-                    y: -500, opacity: 0, stagger: 0.1, duration: 0.5, ease: 'power4.in'
+            // Continuous Scrolling for Ticker (Infinite Loop)
+            // We clone items to ensure seamless loop, but simplistic approach here:
+            // Just move xPercent from 0 to -50 (assuming double rendering)
+            const track = (tickerRef.current as HTMLElement).querySelector('.ticker-track');
+            if (track) {
+                gsap.to(track, {
+                    x: -1000, // Approximate scroll value, depends on content width
+                    duration: 20,
+                    ease: 'none',
+                    repeat: -1
                 });
             }
         }
 
-        // --- WALLET HEX (Scanning) ---
-        else if (type === 'wallet_hex') {
-            const text = "0x" + Array(40).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-            if (elementRef.current) elementRef.current.innerText = '';
-
-            tl.current.to(elementRef.current, {
-                text: { value: text, delimiter: "" },
-                duration: 1,
-                ease: 'none',
-                onUpdate: function () {
-                    // Fallback hack if TextPlugin not enabled, just randomize chars
-                    if (!this.ratio) return;
-                    const len = Math.floor(this.ratio * 40);
-                    const rand = "0x" + Array(len).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
-                    if (elementRef.current) elementRef.current.innerText = rand;
-                }
-            });
+        // 2. Asset Card Pop In
+        if (showCard) {
+            tl.current.from(cardRef.current, {
+                scale: 0.8,
+                opacity: 0,
+                x: 50,
+                duration: 0.8,
+                ease: 'back.out(1.7)'
+            }, 0.5);
         }
 
-    }, { scope: container, dependencies: [type, symbol] });
+    }, { scope: container });
 
     useLayoutEffect(() => {
         if (tl.current) tl.current.seek(frame / fps);
     }, [frame, fps]);
 
-    // RENDER HELPERS
-    const renderToken = () => (
-        <div ref={elementRef} style={{
-            width: 200, height: 200,
-            borderRadius: '50%',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            border: `8px solid ${color || (symbol === 'BTC' ? '#f7931a' : '#627eea')}`,
-            display: 'flex', justifyContent: 'center', alignItems: 'center',
-            boxShadow: `0 0 50px ${color || (symbol === 'BTC' ? '#f7931a33' : '#627eea33')}`,
-            fontSize: '80px', fontWeight: 'bold', color: '#fff',
-            perspective: 1000
-        }}>
-            {symbol}
-        </div>
-    );
-
-    const renderFiatStack = () => (
-        <div ref={elementRef} style={{ position: 'relative', width: 200, height: 200 }}>
-            {Array.from({ length: Math.min(amount, 10) }).map((_, i) => (
-                <div key={i} style={{
-                    position: 'absolute',
-                    bottom: i * 15,
-                    left: i % 2 === 0 ? 0 : 5,
-                    width: 180, height: 40,
-                    backgroundColor: '#10b981',
-                    border: '1px solid #064e3b',
-                    borderRadius: '4px',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
-                }} />
-            ))}
-        </div>
-    );
-
-    const renderWallet = () => (
-        <div ref={elementRef} style={{
-            fontFamily: 'monospace', fontSize: '24px', color: '#14f195',
-            backgroundColor: 'rgba(0,0,0,0.5)', padding: '20px', borderRadius: '8px',
-            border: '1px solid #14f195'
-        }}>
-            0x...
-        </div>
-    );
-
     return (
-        <div ref={container} style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            {type === 'token' && renderToken()}
-            {type === 'fiat_stack' && renderFiatStack()}
-            {type === 'wallet_hex' && renderWallet()}
+        <div ref={container} style={{
+            width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, pointerEvents: 'none',
+            overflow: 'hidden'
+        }}>
+
+            {/* Ticker Tape (Bottom) */}
+            {showTicker && (
+                <div ref={tickerRef} style={{
+                    position: 'absolute', bottom: 40, left: 0, width: '100%', height: 60,
+                    ...STYLES.glassPanel, borderRadius: 0, borderLeft: 'none', borderRight: 'none',
+                    display: 'flex', alignItems: 'center', overflow: 'hidden'
+                }}>
+                    <div style={{
+                        position: 'absolute', left: 0, height: '100%', width: 100,
+                        background: 'linear-gradient(90deg, #0a0a0b 0%, left 100%)', zIndex: 10
+                    }} />
+                    <div style={{
+                        position: 'absolute', right: 0, height: '100%', width: 100,
+                        background: 'linear-gradient(270deg, #0a0a0b 0%, transparent 100%)', zIndex: 10
+                    }} />
+
+                    <div className="ticker-track" style={{ display: 'flex', gap: 40, paddingLeft: 40, whiteSpace: 'nowrap' }}>
+                        {/* Render twice for looping illusion */}
+                        {[...tickerItems, ...tickerItems, ...tickerItems].map((item, i) => (
+                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                <span style={{ fontFamily: THEME.typography.mono, fontWeight: 700, color: THEME.colors.gray[300] }}>
+                                    {item.symbol}
+                                </span>
+                                <span style={{ fontFamily: THEME.typography.mono, color: THEME.colors.white }}>
+                                    {item.price}
+                                </span>
+                                <span style={{
+                                    fontFamily: THEME.typography.mono,
+                                    color: item.isUp ? THEME.colors.emerald : THEME.colors.rose,
+                                    fontSize: 12
+                                }}>
+                                    {item.change}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Asset Card (Top Right) */}
+            {showCard && (
+                <div ref={cardRef} style={{
+                    position: 'absolute', top: 60, right: 60, width: 300,
+                    ...STYLES.glassPanel,
+                    padding: 20,
+                    display: 'flex', flexDirection: 'column', gap: 10
+                }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ ...THEME.typography.header, fontSize: 24, color: THEME.colors.white }}>
+                            {primaryAsset.symbol}
+                        </div>
+                        <div style={{
+                            fontSize: 12, padding: '4px 8px', borderRadius: 4,
+                            background: primaryAsset.isUp ? 'rgba(16, 185, 129, 0.2)' : 'rgba(244, 63, 94, 0.2)',
+                            color: primaryAsset.isUp ? THEME.colors.emerald : THEME.colors.rose,
+                            fontWeight: 700
+                        }}>
+                            {primaryAsset.change24h}
+                        </div>
+                    </div>
+
+                    <div style={{ ...THEME.typography.subHeader, fontSize: 32, color: THEME.colors.white }}>
+                        {primaryAsset.price}
+                    </div>
+
+                    <div style={{ width: '100%', height: 1, background: THEME.colors.border }} />
+
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: THEME.colors.gray[500] }}>
+                        <span>MCAP</span>
+                        <span style={{ color: THEME.colors.gray[300] }}>{primaryAsset.marketCap}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: THEME.colors.gray[500] }}>
+                        <span>VOL (24H)</span>
+                        <span style={{ color: THEME.colors.gray[300] }}>{primaryAsset.volume}</span>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

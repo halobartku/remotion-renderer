@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect, useMemo } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME, STYLES } from './theme';
 
 type OHLC = { o: number; h: number; l: number; c: number };
 
@@ -23,7 +24,7 @@ export const SmartGraph: React.FC<SmartGraphProps> = ({
     data = [10, 40, 30, 70, 50, 90],
     labels,
     type = 'line',
-    color = '#10b981',
+    color = THEME.colors.emerald,
     lineThickness = 4,
     showGrid = true,
     title,
@@ -153,18 +154,14 @@ export const SmartGraph: React.FC<SmartGraphProps> = ({
 
     return (
         <div ref={container} style={{
-            width: '100%', height: '100%',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            ...STYLES.absoluteCenter,
+            flexDirection: 'column',
             position: 'relative',
         }}>
             {/* Glass Container Background */}
             <div style={{
                 position: 'absolute', inset: 0,
-                background: 'linear-gradient(180deg, rgba(23, 23, 23, 0.8) 0%, rgba(10, 10, 10, 0.95) 100%)',
-                borderRadius: '16px',
-                border: '1px solid rgba(255,255,255,0.08)',
-                boxShadow: '0 20px 50px -10px rgba(0, 0, 0, 0.7)',
-                backdropFilter: 'blur(12px)',
+                ...STYLES.glassPanel,
                 zIndex: 0
             }} />
 
@@ -172,11 +169,11 @@ export const SmartGraph: React.FC<SmartGraphProps> = ({
                 {title && (
                     <div style={{
                         position: 'absolute', top: -15, left: 30,
-                        color: '#e5e7eb', fontFamily: 'Inter, system-ui, sans-serif',
+                        color: THEME.colors.gray[100], fontFamily: THEME.typography.fontFamily,
                         fontSize: '22px', fontWeight: 700, letterSpacing: '-0.5px',
                         display: 'flex', alignItems: 'center', gap: '12px'
                     }}>
-                        <div style={{ width: 10, height: 10, background: '#10b981', borderRadius: '50%', boxShadow: '0 0 12px #10b981' }} />
+                        <div style={{ width: 10, height: 10, background: THEME.colors.emerald, borderRadius: '50%', boxShadow: THEME.colors.glow.green }} />
                         {title}
                     </div>
                 )}
@@ -194,16 +191,16 @@ export const SmartGraph: React.FC<SmartGraphProps> = ({
 
                         {/* Sharper gradients */}
                         <linearGradient id="grad-green" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="#34d399" />
+                            <stop offset="0%" stopColor={THEME.colors.emerald} />
                             <stop offset="100%" stopColor="#059669" />
                         </linearGradient>
                         <linearGradient id="grad-red" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stopColor="#f87171" />
+                            <stop offset="0%" stopColor={THEME.colors.rose} />
                             <stop offset="100%" stopColor="#b91c1c" />
                         </linearGradient>
 
                         <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
-                            <path d="M2,2 L10,6 L2,10 L2,2" fill={arrowTrend ? arrowTrend.color || '#ef4444' : '#ef4444'} />
+                            <path d="M2,2 L10,6 L2,10 L2,2" fill={arrowTrend ? arrowTrend.color || THEME.colors.rose : THEME.colors.rose} />
                         </marker>
                     </defs>
 
@@ -214,12 +211,12 @@ export const SmartGraph: React.FC<SmartGraphProps> = ({
                                 <g key={i}>
                                     <line
                                         x1={0} y1={lbl.y} x2={width - 60} y2={lbl.y}
-                                        stroke="rgba(255,255,255,0.08)" strokeWidth={1}
+                                        stroke={THEME.colors.border} strokeWidth={1}
                                     />
                                     <text
                                         x={width - 50} y={lbl.y + 4}
-                                        fill="rgba(255,255,255,0.5)"
-                                        fontSize={11} fontFamily="Inter, sans-serif" fontWeight="500"
+                                        fill={THEME.colors.gray[500]}
+                                        fontSize={11} fontFamily={THEME.typography.fontFamily} fontWeight="500"
                                     >
                                         {lbl.val}
                                     </text>
@@ -273,11 +270,11 @@ export const SmartGraph: React.FC<SmartGraphProps> = ({
                     {/* Markers */}
                     {markers.map((m, i) => (
                         <g key={`m-${i}`}>
-                            <line className="marker-line" x1={m.x} y1={0} x2={m.x} y2={height} stroke={m.color || '#facc15'} strokeWidth={1.5} strokeDasharray="4,4" opacity={0.6} />
+                            <line className="marker-line" x1={m.x} y1={0} x2={m.x} y2={height} stroke={m.color || THEME.colors.gold} strokeWidth={1.5} strokeDasharray="4,4" opacity={0.6} />
 
                             <g className="marker-label" transform={`translate(${m.x}, -12)`}>
-                                <path d="M-50,-24 L50,-24 L50,0 L6,0 L0,6 L-6,0 L-50,0 Z" fill={m.color || '#facc15'} />
-                                <text x={0} y={-8} fill="#000" textAnchor="middle" fontFamily="Inter, sans-serif" fontWeight="800" fontSize={11} letterSpacing="-0.2px">
+                                <path d="M-50,-24 L50,-24 L50,0 L6,0 L0,6 L-6,0 L-50,0 Z" fill={m.color || THEME.colors.gold} />
+                                <text x={0} y={-8} fill="#000" textAnchor="middle" fontFamily={THEME.typography.fontFamily} fontWeight="800" fontSize={11} letterSpacing="-0.2px">
                                     {m.label?.toUpperCase()}
                                 </text>
                             </g>
@@ -289,7 +286,7 @@ export const SmartGraph: React.FC<SmartGraphProps> = ({
                         <path
                             className="arrow-trend"
                             d={`M ${candles[arrowTrend.startIdx].x} ${candles[arrowTrend.startIdx].h - 20} L ${candles[arrowTrend.endIdx].x} ${candles[arrowTrend.endIdx].l + 20}`}
-                            stroke={arrowTrend.color || '#ef4444'}
+                            stroke={arrowTrend.color || THEME.colors.rose}
                             strokeWidth={3}
                             strokeLinecap="round"
                             markerEnd="url(#arrowhead)"
