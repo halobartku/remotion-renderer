@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "render": "node render-cli.js",
+    "start": "node server.js",
     "start-server": "node server.js",
     "dev": "node server.js"
   },
