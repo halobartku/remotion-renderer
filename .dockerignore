@@ -1,0 +1,10 @@
+.git
+.gitignore
+renderer/node_modules
+renderer/npm-debug.log
+renderer/error.log
+renderer/.env
+renderer/outputs/
+renderer/uploads/
+renderer/web-ui/node_modules
+renderer/web-ui/dist

@@ -2,7 +2,6 @@
 FROM node:18-bullseye-slim
 
 # 1. Install System Dependencies (Chromium + FFmpeg)
-# Remotion requires these to render videos
 RUN apt-get update && apt-get install -y \
     chromium \
     ffmpeg \
@@ -43,28 +42,27 @@ RUN apt-get update && apt-get install -y \
     xdg-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Set Environment Variables for Puppeteer to use installed Chromium
+# Set Environment Variables for Puppeteer
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # 2. Set Working Directory
 WORKDIR /app
 
-# 3. Copy Manifests and Install Dependencies
-COPY package*.json ./
-RUN npm ci
-
-# 4. Copy Source Code
+# 3. Copy Everything (From Root)
 COPY . .
 
+# 4. Setup Renderer
+WORKDIR /app/renderer
+RUN npm ci
+
 # 5. Build the Frontend (Web UI)
-# Assuming web-ui is inside the renderer folder and has its own build script
-WORKDIR /app/web-ui
+WORKDIR /app/renderer/web-ui
 RUN npm install
 RUN npm run build
-WORKDIR /app
 
-# 6. Expose Port
+# 6. Final Setup
+WORKDIR /app/renderer
 EXPOSE 3005
 ENV PORT=3005
 
