@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type VisualFXProps = {
     type: 'grid' | 'vignette' | 'glitch' | 'spotlight' | 'finance_gradient';
@@ -11,7 +12,7 @@ type VisualFXProps = {
 
 export const VisualFX: React.FC<VisualFXProps> = ({
     type = 'grid',
-    color = '#ffffff',
+    color = THEME.colors.white,
     intensity = 0.5
 }) => {
     const frame = useCurrentFrame();
@@ -58,13 +59,13 @@ export const VisualFX: React.FC<VisualFXProps> = ({
         }
         if (type === 'vignette') {
             return {
-                background: `radial-gradient(circle, transparent 50%, #000000 150%)`,
+                background: `radial-gradient(circle, transparent 50%, ${THEME.colors.obsidian} 150%)`,
                 opacity: intensity
             };
         }
         if (type === 'finance_gradient') {
             return {
-                background: `linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)`, // Slate to Indigo
+                background: `linear-gradient(135deg, ${THEME.colors.gray[900]} 0%, ${THEME.colors.obsidian} 100%)`, // Slate to Obsidian roughly
                 opacity: 1
             };
         }

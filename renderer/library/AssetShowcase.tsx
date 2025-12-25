@@ -3,6 +3,8 @@ import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+import { THEME } from './theme';
+
 type AssetShowcaseProps = {
     title?: string;
     subtitle?: string;
@@ -20,7 +22,7 @@ export const AssetShowcase: React.FC<AssetShowcaseProps> = ({
         { label: "RISK", value: "EXTREME" },
         { label: "INNOVATION", value: "99" }
     ],
-    color = "#facc15" // Gold
+    color = THEME.colors.gold
 }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
@@ -68,11 +70,12 @@ export const AssetShowcase: React.FC<AssetShowcaseProps> = ({
         <div ref={container} style={{
             width: '100%', height: '100%',
             display: 'flex', justifyContent: 'center', alignItems: 'center',
-            perspective: 1000
+            perspective: 1000,
+            fontFamily: THEME.typography.fontFamily
         }}>
             <div ref={cardRef} style={{
                 width: 400, height: 650,
-                background: `linear-gradient(135deg, #1e293b 0%, #0f172a 100%)`,
+                background: `linear-gradient(135deg, ${THEME.colors.gray[800]} 0%, ${THEME.colors.obsidian} 100%)`,
                 borderRadius: '20px',
                 border: `2px solid ${color}`,
                 boxShadow: `0 0 50px ${color}44`,
@@ -80,7 +83,7 @@ export const AssetShowcase: React.FC<AssetShowcaseProps> = ({
                 position: 'relative'
             }}>
                 {/* Image Area */}
-                <div style={{ width: '100%', height: '50%', background: '#334155', position: 'relative' }}>
+                <div style={{ width: '100%', height: '50%', background: THEME.colors.gray[700], position: 'relative' }}>
                     {imageUrl ? (
                         <img src={imageUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
@@ -90,22 +93,22 @@ export const AssetShowcase: React.FC<AssetShowcaseProps> = ({
                     )}
                     <div style={{
                         position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%',
-                        background: 'linear-gradient(to top, #0f172a, transparent)'
+                        background: `linear-gradient(to top, ${THEME.colors.obsidian}, transparent)`
                     }} />
                 </div>
 
                 {/* Content */}
-                <div style={{ padding: '30px', color: '#fff' }}>
-                    <h1 style={{ margin: 0, textTransform: 'uppercase', fontSize: '32px', color: color }}>{title}</h1>
-                    <h3 style={{ margin: '0 0 20px 0', opacity: 0.7, fontWeight: 400 }}>{subtitle}</h3>
+                <div style={{ padding: '30px', color: THEME.colors.white }}>
+                    <h1 style={{ ...THEME.typography.header, margin: 0, textTransform: 'uppercase', fontSize: '32px', color: color }}>{title}</h1>
+                    <h3 style={{ ...THEME.typography.subHeader, margin: '0 0 20px 0', opacity: 0.7, fontWeight: 400, fontSize: 18 }}>{subtitle}</h3>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                         {stats.map((stat, i) => (
                             <div key={i} className="stat-row" style={{
                                 display: 'flex', justifyContent: 'space-between',
-                                borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '5px'
+                                borderBottom: `1px solid ${THEME.colors.border}`, paddingBottom: '5px'
                             }}>
-                                <span style={{ fontSize: '14px', opacity: 0.6 }}>{stat.label}</span>
+                                <span style={{ fontSize: '14px', opacity: 0.6, fontFamily: THEME.typography.mono.fontFamily }}>{stat.label}</span>
                                 <span style={{ fontSize: '18px', fontWeight: 'bold' }}>{stat.value}</span>
                             </div>
                         ))}

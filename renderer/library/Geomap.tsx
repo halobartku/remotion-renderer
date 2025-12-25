@@ -93,7 +93,7 @@ export const Geomap: React.FC<GeomapProps> = ({
             {title && (
                 <div style={{
                     position: 'absolute', top: 30, left: 30,
-                    color: THEME.colors.white, ...THEME.typography.header, fontSize: 24,
+                    color: THEME.colors.white, ...THEME.typography.header, fontFamily: THEME.typography.fontFamily, fontSize: 24,
                     display: 'flex', alignItems: 'center', gap: 12
                 }}>
                     <span style={{ color: color }}>●</span> {title.toUpperCase()}

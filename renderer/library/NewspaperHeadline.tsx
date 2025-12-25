@@ -57,7 +57,7 @@ export const NewspaperHeadline: React.FC<NewspaperHeadlineProps> = ({
         }}>
             <div ref={paperRef} style={{
                 width: 600, height: 800,
-                backgroundColor: '#f1f5f9', // Keep paper white/off-white (slate-100)
+                backgroundColor: THEME.colors.gray[100], // Keep paper white/off-white (slate-100)
                 color: THEME.colors.obsidian,
                 padding: '40px',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.5)',

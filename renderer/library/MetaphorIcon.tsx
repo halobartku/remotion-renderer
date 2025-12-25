@@ -1,7 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react';
-import { useCurrentFrame, useVideoConfig } from 'remotion';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type MetaphorIconProps = {
     type: 'target' | 'shield' | 'skull' | 'lock' | 'rocket';
@@ -10,7 +7,7 @@ type MetaphorIconProps = {
 
 export const MetaphorIcon: React.FC<MetaphorIconProps> = ({
     type = 'target',
-    color = '#fff'
+    color = THEME.colors.white
 }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
@@ -71,14 +68,14 @@ export const MetaphorIcon: React.FC<MetaphorIconProps> = ({
                         <path d={paths.target.inner} />
                         <path d={paths.target.center} fill={color} />
                         {/* Arrow */}
-                        <path className="arrow" d="M 0 0 L 20 20" stroke="red" strokeWidth="8" opacity="0" />
+                        <path className="arrow" d="M 0 0 L 20 20" stroke={THEME.colors.rose} strokeWidth="8" opacity="0" />
                     </g>
                 )}
 
                 {type === 'shield' && (
                     <g stroke={color} strokeWidth="5" fill="none">
                         <path d={paths.shield.outline} />
-                        <path d={paths.shield.check} stroke="#10b981" />
+                        <path d={paths.shield.check} stroke={THEME.colors.emerald} />
                     </g>
                 )}
 

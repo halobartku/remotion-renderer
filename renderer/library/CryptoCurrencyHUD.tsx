@@ -57,7 +57,8 @@ export const CryptoCurrencyHUD: React.FC<CryptoCurrencyHUDProps> = ({
             // Continuous Scrolling for Ticker (Infinite Loop)
             // We clone items to ensure seamless loop, but simplistic approach here:
             // Just move xPercent from 0 to -50 (assuming double rendering)
-            const track = (tickerRef.current as HTMLElement).querySelector('.ticker-track');
+            const tickerEl = tickerRef.current as HTMLElement | null;
+            const track = tickerEl?.querySelector('.ticker-track');
             if (track) {
                 gsap.to(track, {
                     x: -1000, // Approximate scroll value, depends on content width
@@ -100,25 +101,25 @@ export const CryptoCurrencyHUD: React.FC<CryptoCurrencyHUDProps> = ({
                 }}>
                     <div style={{
                         position: 'absolute', left: 0, height: '100%', width: 100,
-                        background: 'linear-gradient(90deg, #0a0a0b 0%, left 100%)', zIndex: 10
+                        background: `linear-gradient(90deg, ${THEME.colors.gray[900]} 0%, transparent 100%)`, zIndex: 10
                     }} />
                     <div style={{
                         position: 'absolute', right: 0, height: '100%', width: 100,
-                        background: 'linear-gradient(270deg, #0a0a0b 0%, transparent 100%)', zIndex: 10
+                        background: `linear-gradient(270deg, ${THEME.colors.gray[900]} 0%, transparent 100%)`, zIndex: 10
                     }} />
 
                     <div className="ticker-track" style={{ display: 'flex', gap: 40, paddingLeft: 40, whiteSpace: 'nowrap' }}>
                         {/* Render twice for looping illusion */}
                         {[...tickerItems, ...tickerItems, ...tickerItems].map((item, i) => (
                             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                <span style={{ fontFamily: THEME.typography.mono, fontWeight: 700, color: THEME.colors.gray[300] }}>
+                                <span style={{ fontFamily: THEME.typography.mono.fontFamily, fontWeight: 700, color: THEME.colors.gray[300] }}>
                                     {item.symbol}
                                 </span>
-                                <span style={{ fontFamily: THEME.typography.mono, color: THEME.colors.white }}>
+                                <span style={{ fontFamily: THEME.typography.mono.fontFamily, color: THEME.colors.white }}>
                                     {item.price}
                                 </span>
                                 <span style={{
-                                    fontFamily: THEME.typography.mono,
+                                    fontFamily: THEME.typography.mono.fontFamily,
                                     color: item.isUp ? THEME.colors.emerald : THEME.colors.rose,
                                     fontSize: 12
                                 }}>
@@ -144,7 +145,7 @@ export const CryptoCurrencyHUD: React.FC<CryptoCurrencyHUDProps> = ({
                         </div>
                         <div style={{
                             fontSize: 12, padding: '4px 8px', borderRadius: 4,
-                            background: primaryAsset.isUp ? 'rgba(16, 185, 129, 0.2)' : 'rgba(244, 63, 94, 0.2)',
+                            background: primaryAsset.isUp ? `${THEME.colors.emerald}33` : `${THEME.colors.rose}33`,
                             color: primaryAsset.isUp ? THEME.colors.emerald : THEME.colors.rose,
                             fontWeight: 700
                         }}>

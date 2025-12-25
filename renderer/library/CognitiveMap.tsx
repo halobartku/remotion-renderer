@@ -3,6 +3,8 @@ import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
+import { THEME } from './theme';
+
 type CognitiveMapProps = {
     type: 'brain_wireframe' | 'pyramid_maslow' | 'iceberg' | 'synapse_spark';
     color?: string;
@@ -11,7 +13,7 @@ type CognitiveMapProps = {
 
 export const CognitiveMap: React.FC<CognitiveMapProps> = ({
     type = 'brain_wireframe',
-    color = '#60a5fa',
+    color = THEME.colors.blue,
     activeLayer = -1
 }) => {
     const frame = useCurrentFrame();
@@ -33,7 +35,7 @@ export const CognitiveMap: React.FC<CognitiveMapProps> = ({
             });
             // Pulse effect
             tl.current.to(elementRef.current, {
-                filter: 'drop-shadow(0 0 15px rgba(96, 165, 250, 0.8))',
+                filter: `drop-shadow(0 0 15px ${THEME.colors.blue}cc)`,
                 duration: 1,
                 yoyo: true,
                 repeat: -1
@@ -51,7 +53,7 @@ export const CognitiveMap: React.FC<CognitiveMapProps> = ({
 
                 if (activeLayer >= 0 && activeLayer < layers.length) {
                     tl.current.to(layers[layers.length - 1 - activeLayer], {
-                        backgroundColor: '#f59e0b', scale: 1.1, duration: 0.5
+                        backgroundColor: THEME.colors.gold, scale: 1.1, duration: 0.5
                     }, 1.5);
                 }
             }
@@ -84,8 +86,8 @@ export const CognitiveMap: React.FC<CognitiveMapProps> = ({
             boxShadow: `inset 0 0 50px ${color}44`,
             display: 'flex', justifyContent: 'center', alignItems: 'center'
         }}>
-            <div style={{ position: 'absolute', top: '30%', left: '30%', width: 20, height: 20, background: '#fff', borderRadius: '50%', boxShadow: '0 0 20px #fff' }} />
-            <span style={{ color: '#fff', fontFamily: 'monospace', textShadow: `0 0 10px ${color}` }}>CORTEX</span>
+            <div style={{ position: 'absolute', top: '30%', left: '30%', width: 20, height: 20, background: THEME.colors.white, borderRadius: '50%', boxShadow: `0 0 20px ${THEME.colors.white}` }} />
+            <span style={{ color: THEME.colors.white, fontFamily: THEME.typography.mono.fontFamily, textShadow: `0 0 10px ${color}` }}>CORTEX</span>
         </div>
     );
 
@@ -104,20 +106,21 @@ export const CognitiveMap: React.FC<CognitiveMapProps> = ({
         <div ref={elementRef} style={{ position: 'relative', width: 400, height: 500, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {/* Visible Tip */}
             <div style={{
-                width: 150, height: 100, background: '#e0f2fe',
+                width: 150, height: 100, background: THEME.colors.gray[200],
                 clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
                 zIndex: 10
             }} />
 
             {/* Water Line */}
-            <div className="water-level" style={{ width: '600px', height: '4px', background: '#3b82f6', margin: '10px 0', zIndex: 20 }} />
+            <div className="water-level" style={{ width: '600px', height: '4px', background: THEME.colors.blue, margin: '10px 0', zIndex: 20 }} />
 
             {/* Hidden Mass */}
             <div className="hidden-part" style={{
-                width: 350, height: 350, background: '#1e3a8a',
+                width: 350, height: 350, background: THEME.colors.gray[900], // Darker subconscious
                 clipPath: 'polygon(0 0, 100% 0, 80% 100%, 20% 100%)',
                 opacity: 0.8,
-                display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#60a5fa', fontWeight: 'bold'
+                display: 'flex', justifyContent: 'center', alignItems: 'center', color: THEME.colors.blue, fontWeight: 'bold',
+                fontFamily: THEME.typography.fontFamily
             }}>
                 SUBCONSCIOUS
             </div>

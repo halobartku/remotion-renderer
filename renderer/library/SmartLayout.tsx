@@ -1,5 +1,6 @@
 import React from 'react';
 import { AbsoluteFill } from 'remotion';
+import { THEME } from './theme';
 
 type SmartLayoutProps = {
     children: React.ReactNode;
@@ -14,7 +15,7 @@ export const SmartLayout: React.FC<SmartLayoutProps> = ({
     type = 'fullscreen',
     gap = 20,
     padding = 40,
-    background = '#111827' // slate-900 default
+    background = THEME.colors.gray[900]
 }) => {
 
     const childrenArray = React.Children.toArray(children);
@@ -44,7 +45,7 @@ export const SmartLayout: React.FC<SmartLayoutProps> = ({
     }
 
     return (
-        <AbsoluteFill style={{ ...containerStyle, fontFamily: 'sans-serif' }}>
+        <AbsoluteFill style={{ ...containerStyle, fontFamily: THEME.typography.fontFamily }}>
             {childrenArray.map((child, i) => (
                 <div key={i} style={{
                     flex: 1,
@@ -53,8 +54,8 @@ export const SmartLayout: React.FC<SmartLayoutProps> = ({
                     position: 'relative',
                     overflow: 'hidden',
                     borderRadius: '12px',
-                    backgroundColor: 'rgba(255,255,255,0.02)', // Subtle inner container
-                    border: '1px solid rgba(255,255,255,0.05)'
+                    backgroundColor: `${THEME.colors.white}05`, // Subtle inner container
+                    border: `1px solid ${THEME.colors.white}0d`
                 }}>
                     {child}
                 </div>

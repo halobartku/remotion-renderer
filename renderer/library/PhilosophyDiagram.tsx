@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type PhilosophyDiagramProps = {
     type: 'venn_diagram' | 'balance_scale' | 'flowchart_logic';
@@ -50,60 +51,60 @@ export const PhilosophyDiagram: React.FC<PhilosophyDiagramProps> = ({
 
     // RENDER HELPERS
     const renderVenn = () => (
-        <div style={{ position: 'relative', width: 600, height: 400, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ position: 'relative', width: 600, height: 400, display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: THEME.typography.fontFamily }}>
             <div className="circle-a" style={{
                 position: 'absolute', left: 50, width: 300, height: 300,
-                borderRadius: '50%', background: '#60a5fa', opacity: 0.6, display: 'flex', justifyContent: 'center', alignItems: 'center',
-                fontSize: '24px', fontWeight: 'bold', color: '#fff'
+                borderRadius: '50%', background: THEME.colors.blue, opacity: 0.6, display: 'flex', justifyContent: 'center', alignItems: 'center',
+                fontSize: '24px', fontWeight: 'bold', color: THEME.colors.white
             }}>
                 {labelA}
             </div>
             <div className="circle-b" style={{
                 position: 'absolute', right: 50, width: 300, height: 300,
-                borderRadius: '50%', background: '#f472b6', opacity: 0.6, display: 'flex', justifyContent: 'center', alignItems: 'center',
-                fontSize: '24px', fontWeight: 'bold', color: '#fff'
+                borderRadius: '50%', background: THEME.colors.rose, opacity: 0.6, display: 'flex', justifyContent: 'center', alignItems: 'center',
+                fontSize: '24px', fontWeight: 'bold', color: THEME.colors.white
             }}>
                 {labelB}
             </div>
-            <div className="intersection-label" style={{ zIndex: 10, color: '#fff', fontWeight: 'bold' }}>Success</div>
+            <div className="intersection-label" style={{ zIndex: 10, color: THEME.colors.white, fontWeight: 'bold' }}>Success</div>
         </div>
     );
 
     const renderScale = () => (
-        <div style={{ position: 'relative', width: 400, height: 400, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ position: 'relative', width: 400, height: 400, display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: THEME.typography.fontFamily }}>
             {/* Base */}
-            <div style={{ width: 10, height: 200, background: '#fff', marginTop: 100 }} />
-            <div style={{ width: 100, height: 10, background: '#fff' }} />
+            <div style={{ width: 10, height: 200, background: THEME.colors.white, marginTop: 100 }} />
+            <div style={{ width: 100, height: 10, background: THEME.colors.white }} />
 
             {/* Beam Group (Rotates) */}
-            <div className="scale-beam" style={{ position: 'absolute', top: 100, width: 300, height: 10, background: '#fff' }}>
+            <div className="scale-beam" style={{ position: 'absolute', top: 100, width: 300, height: 10, background: THEME.colors.white }}>
                 {/* Left Plate */}
                 <div className="plate" style={{ position: 'absolute', left: 0, top: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ width: 2, height: 80, background: '#fff' }} />
-                    <div style={{ width: 80, height: 10, background: '#fff', borderRadius: '0 0 40px 40px' }} />
-                    <div style={{ marginTop: 10, color: '#fff' }}>{labelA}</div>
+                    <div style={{ width: 2, height: 80, background: THEME.colors.white }} />
+                    <div style={{ width: 80, height: 10, background: THEME.colors.white, borderRadius: '0 0 40px 40px' }} />
+                    <div style={{ marginTop: 10, color: THEME.colors.white }}>{labelA}</div>
                 </div>
                 {/* Right Plate */}
                 <div className="plate" style={{ position: 'absolute', right: 0, top: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ width: 2, height: 80, background: '#fff' }} />
-                    <div style={{ width: 80, height: 10, background: '#fff', borderRadius: '0 0 40px 40px' }} />
-                    <div style={{ marginTop: 10, color: '#fff' }}>{labelB}</div>
+                    <div style={{ width: 2, height: 80, background: THEME.colors.white }} />
+                    <div style={{ width: 80, height: 10, background: THEME.colors.white, borderRadius: '0 0 40px 40px' }} />
+                    <div style={{ marginTop: 10, color: THEME.colors.white }}>{labelB}</div>
                 </div>
             </div>
         </div>
     );
 
     const renderFlowchart = () => (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-            <div className="box" style={{ padding: '20px', border: '2px solid #fff', borderRadius: '10px', color: '#fff' }}>PROBLEM</div>
-            <div className="arrow" style={{ width: 2, height: 30, background: '#fff' }} />
-            <div className="box" style={{ padding: '20px', border: '2px solid #fff', borderRadius: '10px', color: '#fff', transform: 'rotate(45deg)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', fontFamily: THEME.typography.fontFamily }}>
+            <div className="box" style={{ padding: '20px', border: `2px solid ${THEME.colors.white}`, borderRadius: '10px', color: THEME.colors.white }}>PROBLEM</div>
+            <div className="arrow" style={{ width: 2, height: 30, background: THEME.colors.white }} />
+            <div className="box" style={{ padding: '20px', border: `2px solid ${THEME.colors.white}`, borderRadius: '10px', color: THEME.colors.white, transform: 'rotate(45deg)' }}>
                 <div style={{ transform: 'rotate(-45deg)' }}>DECISION</div>
             </div>
-            <div className="arrow" style={{ width: 2, height: 30, background: '#fff' }} />
+            <div className="arrow" style={{ width: 2, height: 30, background: THEME.colors.white }} />
             <div style={{ display: 'flex', gap: '50px' }}>
-                <div className="box" style={{ padding: '20px', background: '#10b981', borderRadius: '10px', color: '#fff' }}>YES</div>
-                <div className="box" style={{ padding: '20px', background: '#ef4444', borderRadius: '10px', color: '#fff' }}>NO</div>
+                <div className="box" style={{ padding: '20px', background: THEME.colors.emerald, borderRadius: '10px', color: THEME.colors.white }}>YES</div>
+                <div className="box" style={{ padding: '20px', background: THEME.colors.rose, borderRadius: '10px', color: THEME.colors.white }}>NO</div>
             </div>
         </div>
     );

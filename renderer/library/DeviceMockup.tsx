@@ -1,7 +1,8 @@
 import React, { useRef, useLayoutEffect } from 'react';
-import { useCurrentFrame, useVideoConfig } from 'remotion';
+import { useCurrentFrame, useVideoConfig, AbsoluteFill } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type DeviceMockupProps = {
     type: 'iphone_15' | 'macbook_pro';
@@ -43,18 +44,18 @@ export const DeviceMockup: React.FC<DeviceMockupProps> = ({
     const renderIphone = () => (
         <div style={{
             width: 380, height: 780,
-            background: '#000', borderRadius: '50px',
-            border: '8px solid #333',
+            background: THEME.colors.obsidian, borderRadius: '50px',
+            border: `8px solid ${THEME.colors.gray[800]}`,
             boxShadow: '0 50px 100px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.2)',
             position: 'relative', overflow: 'hidden',
             transformStyle: 'preserve-3d'
         }}>
             {/* Notch */}
-            <div style={{ position: 'absolute', top: 20, left: '50%', transform: 'translateX(-50%)', width: 120, height: 35, background: '#000', borderRadius: '20px', zIndex: 20 }} />
+            <div style={{ position: 'absolute', top: 20, left: '50%', transform: 'translateX(-50%)', width: 120, height: 35, background: THEME.colors.obsidian, borderRadius: '20px', zIndex: 20 }} />
 
             {/* Screen Content */}
-            <div style={{ width: '100%', height: '100%', overflow: 'hidden', background: '#fff' }}>
-                {children || <div style={{ width: '100%', height: '100%', background: '#1e293b', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#fff' }}>APP CONTENT</div>}
+            <div style={{ width: '100%', height: '100%', overflow: 'hidden', background: THEME.colors.white }}>
+                {children || <div style={{ width: '100%', height: '100%', background: THEME.colors.gray[900], display: 'flex', justifyContent: 'center', alignItems: 'center', color: THEME.colors.white, fontFamily: THEME.typography.fontFamily }}>APP CONTENT</div>}
             </div>
 
             {/* Reflection */}
@@ -70,22 +71,22 @@ export const DeviceMockup: React.FC<DeviceMockupProps> = ({
             {/* Lid/Screen */}
             <div style={{
                 width: '100%', height: 550,
-                background: '#000', borderRadius: '20px 20px 0 0',
-                border: '4px solid #333', borderBottom: 'none',
-                boxShadow: '0 0 0 2px #555',
+                background: THEME.colors.obsidian, borderRadius: '20px 20px 0 0',
+                border: `4px solid ${THEME.colors.gray[800]}`, borderBottom: 'none',
+                boxShadow: `0 0 0 2px ${THEME.colors.gray[700]}`,
                 overflow: 'hidden', position: 'relative'
             }}>
-                <div style={{ width: '100%', height: '100%', background: '#fff' }}>
-                    {children || <div style={{ width: '100%', height: '100%', background: '#1e293b', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#fff' }}>DESKTOP CONTENT</div>}
+                <div style={{ width: '100%', height: '100%', background: THEME.colors.white }}>
+                    {children || <div style={{ width: '100%', height: '100%', background: THEME.colors.gray[900], display: 'flex', justifyContent: 'center', alignItems: 'center', color: THEME.colors.white, fontFamily: THEME.typography.fontFamily }}>DESKTOP CONTENT</div>}
                 </div>
                 {/* Camera */}
-                <div style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', width: 8, height: 8, background: '#333', borderRadius: '50%' }} />
+                <div style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', width: 8, height: 8, background: THEME.colors.gray[800], borderRadius: '50%' }} />
             </div>
 
             {/* Base */}
             <div style={{
                 width: '120%', height: 30, marginLeft: '-10%',
-                background: '#e2e8f0',
+                background: THEME.colors.gray[300],
                 transform: 'rotateX(70deg)', transformOrigin: 'top',
                 borderRadius: '0 0 20px 20px',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.5)'

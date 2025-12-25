@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type SocialNetworkProps = {
     type: 'viral_spread' | 'connected_clusters' | 'isolated_nodes';
@@ -12,7 +13,7 @@ type SocialNetworkProps = {
 export const SocialNetwork: React.FC<SocialNetworkProps> = ({
     type = 'viral_spread',
     nodeCount = 30,
-    color = '#60a5fa'
+    color = THEME.colors.blue
 }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
@@ -67,7 +68,7 @@ export const SocialNetwork: React.FC<SocialNetworkProps> = ({
                         if (targetIdx > i) { // Draw once
                             // Connection is red if both infected
                             const isLineInfected = isInfected && target.infected;
-                            ctx.strokeStyle = isLineInfected ? '#ef4444' : `${color}33`;
+                            ctx.strokeStyle = isLineInfected ? THEME.colors.rose : `${color}33`;
                             ctx.beginPath();
                             ctx.moveTo(node.x, node.y);
                             ctx.lineTo(target.x, target.y);
@@ -79,9 +80,9 @@ export const SocialNetwork: React.FC<SocialNetworkProps> = ({
                 // Draw Nodes
                 nodes.forEach((node, i) => {
                     const isInfected = (i / nodeCount) < state.spread;
-                    ctx.fillStyle = isInfected ? '#ef4444' : color;
+                    ctx.fillStyle = isInfected ? THEME.colors.rose : color;
                     ctx.shadowBlur = isInfected ? 15 : 0;
-                    ctx.shadowColor = '#ef4444';
+                    ctx.shadowColor = THEME.colors.rose;
 
                     ctx.beginPath();
                     ctx.arc(node.x, node.y, isInfected ? node.r * 1.5 : node.r, 0, Math.PI * 2);
@@ -98,9 +99,9 @@ export const SocialNetwork: React.FC<SocialNetworkProps> = ({
     }, [frame, fps]);
 
     return (
-        <div ref={container} style={{ width: '100%', height: '100%', background: '#0f172a' }}>
+        <div ref={container} style={{ width: '100%', height: '100%', background: THEME.colors.gray[900] }}>
             <canvas ref={canvasRef} width={1920} height={1080} style={{ width: '100%', height: '100%' }} />
-            <div style={{ position: 'absolute', bottom: 40, left: 40, color: '#fff', fontFamily: 'monospace' }}>
+            <div style={{ position: 'absolute', bottom: 40, left: 40, color: THEME.colors.white, fontFamily: THEME.typography.mono.fontFamily }}>
                 VIRAL VECTORS: {nodeCount} // SPREAD DETECTED
             </div>
         </div>

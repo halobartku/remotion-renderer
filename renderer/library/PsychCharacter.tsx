@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type PsychCharacterProps = {
     type: 'silhouette_man' | 'crowd_sheep' | 'panopticon_eye';
@@ -11,7 +12,7 @@ type PsychCharacterProps = {
 
 export const PsychCharacter: React.FC<PsychCharacterProps> = ({
     type = 'silhouette_man',
-    color = '#fff',
+    color = THEME.colors.white,
     count = 20
 }) => {
     const frame = useCurrentFrame();
@@ -78,7 +79,7 @@ export const PsychCharacter: React.FC<PsychCharacterProps> = ({
 
     const SheepSVG = ({ i }: { i: number }) => (
         <div key={i} className="sheep" style={{ width: 40, height: 40, background: color, borderRadius: '50%', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: 5, left: -5, width: 15, height: 20, background: '#333', borderRadius: '10px' }} /> {/* Head */}
+            <div style={{ position: 'absolute', top: 5, left: -5, width: 15, height: 20, background: THEME.colors.gray[800], borderRadius: '10px' }} /> {/* Head */}
         </div>
     );
 
@@ -94,7 +95,7 @@ export const PsychCharacter: React.FC<PsychCharacterProps> = ({
             </g>
 
             {/* Blink Mask using clipPath or just overlay rect for simple blink */}
-            <rect className="blink-lid" x="0" y="0" width="200" height="0" fill="#0f172a" />
+            <rect className="blink-lid" x="0" y="0" width="200" height="0" fill={THEME.colors.gray[900]} />
         </svg>
     );
 

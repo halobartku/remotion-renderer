@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type NarrativeTransitionProps = {
     type: 'ink_blot' | 'shutter_snap' | 'slide_wipe';
@@ -11,7 +12,7 @@ type NarrativeTransitionProps = {
 
 export const NarrativeTransition: React.FC<NarrativeTransitionProps> = ({
     type = 'slide_wipe',
-    color = '#000',
+    color = THEME.colors.obsidian,
     inOrOut = 'out'
 }) => {
     const frame = useCurrentFrame();
@@ -83,8 +84,8 @@ export const NarrativeTransition: React.FC<NarrativeTransitionProps> = ({
 
             {type === 'shutter_snap' && (
                 <>
-                    <div className="blade-top" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '0%', background: '#111' }} />
-                    <div className="blade-bottom" style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '0%', background: '#111' }} />
+                    <div className="blade-top" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '0%', background: THEME.colors.gray[900] }} />
+                    <div className="blade-bottom" style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '0%', background: THEME.colors.gray[900] }} />
                 </>
             )}
 

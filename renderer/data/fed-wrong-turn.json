@@ -1,0 +1,161 @@
+{
+    "meta": {
+        "id": "fed-wrong-turn",
+        "title": "The Fed's Wrong Turn",
+        "duration": 10,
+        "fps": 30,
+        "dimensions": {
+            "width": 1920,
+            "height": 1080
+        }
+    },
+    "theme": "bloomberg",
+    "scenes": [
+        {
+            "id": "intro",
+            "duration": 3,
+            "type": "split_screen",
+            "timing": {
+                "start": 0,
+                "end": 90
+            },
+            "content": {
+                "global": {
+                    "title": "THE FED'S WRONG TURN"
+                },
+                "left": {
+                    "header": {
+                        "category": "Expectation",
+                        "title": "2020 Outlook",
+                        "subtitle": "Rates at zero indefinitely",
+                        "align": "center"
+                    },
+                    "chart": {
+                        "type": "line",
+                        "data": [
+                            {
+                                "x": 2020,
+                                "y": 0
+                            },
+                            {
+                                "x": 2021,
+                                "y": 0
+                            },
+                            {
+                                "x": 2022,
+                                "y": 0
+                            },
+                            {
+                                "x": 2023,
+                                "y": 0
+                            },
+                            {
+                                "x": 2024,
+                                "y": 0
+                            }
+                        ],
+                        "color": "#10b981",
+                        "title": "Projected Dot Plot"
+                    }
+                },
+                "right": {
+                    "header": {
+                        "category": "Reality",
+                        "title": "2022-2023",
+                        "subtitle": "The fastest tightening cycle",
+                        "align": "center"
+                    },
+                    "chart": {
+                        "type": "bar",
+                        "data": [
+                            {
+                                "label": "Mar '22",
+                                "value": 0.25
+                            },
+                            {
+                                "label": "May",
+                                "value": 0.75
+                            },
+                            {
+                                "label": "Jun",
+                                "value": 1.25
+                            },
+                            {
+                                "label": "Jul",
+                                "value": 1.75
+                            },
+                            {
+                                "label": "Sep",
+                                "value": 2.50
+                            },
+                            {
+                                "label": "Nov",
+                                "value": 3.25
+                            },
+                            {
+                                "label": "Dec",
+                                "value": 3.75
+                            },
+                            {
+                                "label": "Feb '23",
+                                "value": 4.25
+                            },
+                            {
+                                "label": "Mar",
+                                "value": 4.75
+                            },
+                            {
+                                "label": "May",
+                                "value": 5.00
+                            },
+                            {
+                                "label": "Jul",
+                                "value": 5.25
+                            }
+                        ],
+                        "color": "#f59e0b",
+                        "title": "Fed Funds Rate"
+                    }
+                }
+            }
+        },
+        {
+            "id": "callout",
+            "duration": 2,
+            "type": "overlay",
+            "timing": {
+                "start": 180,
+                "end": 240
+            },
+            "content": {
+                "component": "stat_callout",
+                "position": "bottom_right",
+                "data": {
+                    "value": "11 HIKES",
+                    "label": "IN 16 MONTHS",
+                    "color": "#f59e0b"
+                }
+            }
+        },
+        {
+            "id": "transition",
+            "duration": 2,
+            "type": "transition",
+            "timing": {
+                "start": 240,
+                "end": 300
+            },
+            "content": {
+                "effect": "arrow_sweep",
+                "from": "right",
+                "to": "left",
+                "color": "#f59e0b",
+                "message": {
+                    "text": "EXPECTATIONS SHATTERED",
+                    "position": "center",
+                    "color": "#ef4444"
+                }
+            }
+        }
+    ]
+}

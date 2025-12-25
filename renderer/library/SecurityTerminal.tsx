@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type SecurityTerminalProps = {
     type: 'matrix_rain' | 'access_denied' | 'password_crack';
@@ -35,7 +36,7 @@ export const SecurityTerminal: React.FC<SecurityTerminalProps> = ({
                         ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                         ctx.fillRect(0, 0, 1920, 1080);
 
-                        ctx.fillStyle = '#10b981';
+                        ctx.fillStyle = THEME.colors.emerald;
                         ctx.font = '20px monospace';
 
                         for (let i = 0; i < drops.length; i++) {
@@ -55,7 +56,7 @@ export const SecurityTerminal: React.FC<SecurityTerminalProps> = ({
         // --- ACCESS DENIED (Flash) ---
         else if (type === 'access_denied') {
             tl.current.from('.alert-box', { scale: 0, duration: 0.5, ease: 'back.out' });
-            tl.current.to('.alert-box', { background: '#ef4444', color: '#000', duration: 0.1, yoyo: true, repeat: 5 });
+            tl.current.to('.alert-box', { background: THEME.colors.rose, color: THEME.colors.obsidian, duration: 0.1, yoyo: true, repeat: 5 });
         }
 
         // --- PASSWORD CRACK (Rolling numbers) ---
@@ -72,7 +73,7 @@ export const SecurityTerminal: React.FC<SecurityTerminalProps> = ({
                     }
                 }
             });
-            tl.current.to('.crack-text', { textContent: text, color: '#10b981', duration: 0.5 });
+            tl.current.to('.crack-text', { textContent: text, color: THEME.colors.emerald, duration: 0.5 });
         }
 
     }, { scope: container, dependencies: [type] });
@@ -84,16 +85,16 @@ export const SecurityTerminal: React.FC<SecurityTerminalProps> = ({
     return (
         <div ref={container} style={{
             width: '100%', height: '100%',
-            background: '#000', color: '#10b981', fontFamily: 'monospace',
+            background: THEME.colors.obsidian, color: THEME.colors.emerald, fontFamily: THEME.typography.mono.fontFamily,
             display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden'
         }}>
             {type === 'matrix_rain' && <canvas ref={canvasRef} width={1920} height={1080} />}
 
             {type === 'access_denied' && (
                 <div className="alert-box" style={{
-                    border: '5px solid #ef4444', color: '#ef4444',
+                    border: `5px solid ${THEME.colors.rose}`, color: THEME.colors.rose,
                     padding: '50px 100px', fontSize: '80px', fontWeight: 'bold',
-                    background: '#000'
+                    background: THEME.colors.obsidian
                 }}>
                     ACCESS DENIED
                 </div>

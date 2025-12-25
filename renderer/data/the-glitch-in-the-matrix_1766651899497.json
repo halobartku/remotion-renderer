@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "id": "the-glitch-in-the-matrix",
+    "title": "The Glitch in the Matrix",
+    "duration": 10,
+    "fps": 30,
+    "dimensions": {
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "theme": "default",
+  "scenes": [
+    {
+      "id": "scene-1",
+      "type": "full_bleed",
+      "duration": 2,
+      "timing": {
+        "start": 0,
+        "end": 60
+      },
+      "content": {
+        "background": {
+          "color": "#000000"
+        },
+        "overlay": {
+          "type": "line",
+          "color": "#00ffff",
+          "thickness": 2,
+          "position": "center",
+          "animation": "sine_wave"
+        }
+      }
+    },
+    {
+      "id": "scene-2",
+      "type": "full_bleed",
+      "duration": 3,
+      "timing": {
+        "start": 60,
+        "end": 150
+      },
+      "content": {
+        "background": {
+          "color": "#000000"
+        },
+        "text": {
+          "content": "DECEMBER 19TH",
+          "color": "#ffffff",
+          "font_size": 60,
+          "animation": "glitch"
+        },
+        "overlay": {
+          "type": "line",
+          "color": "#00ffff",
+          "thickness": 2,
+          "position": "center",
+          "animation": "spike"
+        }
+      }
+    },
+    {
+      "id": "scene-3",
+      "type": "full_bleed",
+      "duration": 3,
+      "timing": {
+        "start": 150,
+        "end": 240
+      },
+      "content": {
+        "background": {
+          "color": "#000000",
+          "animation": "binary_scroll"
+        },
+        "text": {
+          "content": "THE WARNING YOU MISSED",
+          "color": "#ffffff",
+          "font_size": 60,
+          "animation": "morph"
+        },
+        "overlay": {
+          "type": "line",
+          "color": "#00ffff",
+          "thickness": 2,
+          "position": "center",
+          "animation": "spike"
+        }
+      }
+    },
+    {
+      "id": "scene-4",
+      "type": "full_bleed",
+      "duration": 2,
+      "timing": {
+        "start": 240,
+        "end": 300
+      },
+      "content": {
+        "background": {
+          "color": "#000000"
+        },
+        "overlay": {
+          "type": "line",
+          "color": "#00ffff",
+          "thickness": 2,
+          "position": "center",
+          "animation": "pulse"
+        }
+      }
+    }
+  ]
+}

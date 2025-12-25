@@ -241,6 +241,123 @@ app.post('/api/ai/orchestrate', async (req, res) => {
     }
 });
 
+// --- V2 API: Deterministic Composition Engine ---
+
+// V2.1: Director (JSON Planner)
+app.post('/api/v2/direct', async (req, res) => {
+    const { script, apiKey } = req.body;
+    const key = apiKey || process.env.GEMINI_API_KEY;
+
+    if (!key) return res.status(400).json({ error: 'API Key required' });
+
+    try {
+        const genAI = new GoogleGenerativeAI(key);
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+
+        const systemPrompt = fs.readFileSync(path.join(__dirname, 'prompts', 'director-v2.txt'), 'utf8');
+        const result = await model.generateContent([systemPrompt, script]);
+
+        let text = result.response.text();
+        // Clean markdown
+        text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
+        const plan = JSON.parse(text);
+        res.json({ plan });
+    } catch (error) {
+        console.error('Director V2 Error:', error);
+        res.status(500).json({ error: 'Failed to analyze script', details: error.message });
+    }
+});
+
+// V2.2: Generator (JSON -> TSX -> Render)
+app.post('/api/v2/generate', async (req, res) => {
+    const { plan } = req.body; // Phase 3 VideoDefinition JSON
+
+    if (!plan || !plan.meta || !plan.scenes) {
+        return res.status(400).json({ error: 'Invalid Video Definition JSON' });
+    }
+
+    const { id } = plan.meta;
+    const timestamp = Date.now();
+
+    // 1. Save JSON Data
+    const dataDir = path.join(__dirname, 'data');
+    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir);
+    const dataFilename = `${id}_${timestamp}.json`;
+    const dataPath = path.join(dataDir, dataFilename);
+    fs.writeFileSync(dataPath, JSON.stringify(plan, null, 2));
+
+    // 2. Create Wrapper TSX
+    // Note: We used to rely on relative paths in createTempProject, 
+    // but the generator logic is in 'renderer/generator'.
+    // The wrapper needs to import VideoGenerator relative to 'renderer/compositions'.
+    // Compositions dir is: renderer/compositions/
+    // Generator dir is: renderer/generator/
+    // Data dir is: renderer/data/
+
+    // We'll create a new composition file in renderer/compositions
+    const compDir = path.join(__dirname, 'compositions');
+    if (!fs.existsSync(compDir)) fs.mkdirSync(compDir);
+    const compFilename = `${id}_${timestamp}.tsx`;
+    const compPath = path.join(compDir, compFilename);
+
+    /* 
+       We need to be careful with imports. 
+       server.js is in renderer/.
+       compPath is in renderer/compositions/.
+       We need to import from ../generator/VideoGenerator and ../data/xxx.json
+    */
+
+    const code = `import React from 'react';
+import { VideoGenerator } from '../generator/VideoGenerator';
+import data from '../data/${dataFilename}';
+import { VideoDefinition } from '../generator/schema';
+
+// Force cast data to match schema
+const videoData = data as unknown as VideoDefinition;
+
+export const GeneratedComposition = () => {
+    return <VideoGenerator data={videoData} />;
+};
+
+export const compositionConfig = {
+    id: '${plan.meta.id}',
+    durationInSeconds: ${plan.meta.duration},
+    fps: ${plan.meta.fps},
+    width: ${plan.meta.dimensions.width},
+    height: ${plan.meta.dimensions.height},
+};
+`;
+
+    fs.writeFileSync(compPath, code);
+
+    // 3. Render
+    // Ensure output directory
+    const outputDir = path.join(__dirname, 'outputs');
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir);
+
+    const outputFilename = `${id}_${timestamp}.mp4`;
+    const outputPath = path.join(outputDir, outputFilename);
+
+    try {
+        console.log(`Starting V2 Render for ${compPath}...`);
+        await renderVideo({
+            input: compPath,
+            output: outputPath
+        });
+
+        res.json({
+            success: true,
+            videoUrl: `/outputs/${outputFilename}`,
+            outputPath: outputPath,
+            debug: { dataPath, compPath }
+        });
+    } catch (error) {
+        console.error('V2 Render Error:', error);
+        res.status(500).json({ error: 'Render failed', details: error.message });
+    }
+});
+
 // Serve React App for all other routes
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'web-ui', 'dist', 'index.html'));

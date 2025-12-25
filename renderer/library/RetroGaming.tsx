@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type RetroGamingProps = {
     type: 'pixel_coins' | 'health_bar' | 'game_over_screen';
@@ -32,7 +33,7 @@ export const RetroGaming: React.FC<RetroGamingProps> = ({
                 ease: 'bounce.out'
             });
             tl.current.to('.pixel-coin', {
-                color: '#fff', // Flash
+                color: THEME.colors.white, // Flash
                 duration: 0.1,
                 repeat: 3,
                 yoyo: true
@@ -70,8 +71,8 @@ export const RetroGaming: React.FC<RetroGamingProps> = ({
                 <div style={{ display: 'flex', gap: '20px' }}>
                     {Array.from({ length: 5 }).map((_, i) => (
                         <div key={i} className="pixel-coin" style={{
-                            width: 60, height: 60, background: '#facc15', border: '5px solid #000',
-                            boxShadow: 'inset -5px -5px 0 rgba(0,0,0,0.2)',
+                            width: 60, height: 60, background: THEME.colors.gold, border: `5px solid ${THEME.colors.obsidian}`,
+                            boxShadow: `inset -5px -5px 0 ${THEME.colors.obsidian}33`,
                             borderRadius: '50%'
                         }} />
                     ))}
@@ -80,13 +81,13 @@ export const RetroGaming: React.FC<RetroGamingProps> = ({
 
             {type === 'health_bar' && (
                 <div className="shake-container" style={{ width: 600 }}>
-                    <div style={{ marginBottom: '10px', fontSize: '30px', color: '#fff' }}>HP: {score}/100</div>
+                    <div style={{ marginBottom: '10px', fontSize: '30px', color: THEME.colors.white }}>HP: {score}/100</div>
                     <div style={{
-                        width: '100%', height: 40, border: '5px solid #fff', background: '#333',
+                        width: '100%', height: 40, border: `5px solid ${THEME.colors.white}`, background: THEME.colors.gray[700],
                         position: 'relative'
                     }}>
                         <div className="fill" style={{
-                            width: '100%', height: '100%', background: score < 30 ? '#ef4444' : '#10b981',
+                            width: '100%', height: '100%', background: score < 30 ? THEME.colors.rose : THEME.colors.emerald,
                             transition: 'background 0.3s'
                         }} />
                     </div>
@@ -95,10 +96,10 @@ export const RetroGaming: React.FC<RetroGamingProps> = ({
 
             {type === 'game_over_screen' && (
                 <div style={{ flexDirection: 'column', alignItems: 'center', display: 'flex' }}>
-                    <h1 className="game-text" style={{ fontSize: '100px', color: '#ef4444', textShadow: '5px 5px 0 #000' }}>
+                    <h1 className="game-text" style={{ fontSize: '100px', color: THEME.colors.rose, textShadow: `5px 5px 0 ${THEME.colors.obsidian}`, fontFamily: THEME.typography.fontFamily }}>
                         {text}
                     </h1>
-                    <div className="try-again" style={{ fontSize: '40px', color: '#fff', marginTop: '20px' }}>
+                    <div className="try-again" style={{ fontSize: '40px', color: THEME.colors.white, marginTop: '20px' }}>
                         INSERT COIN
                     </div>
                 </div>

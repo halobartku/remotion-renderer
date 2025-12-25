@@ -1,7 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react';
-import { useCurrentFrame, useVideoConfig } from 'remotion';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type MicroInteractionProps = {
     type: 'cursor_click' | 'finger_tap' | 'reaction_hearts';
@@ -60,7 +57,7 @@ export const MicroInteraction: React.FC<MicroInteractionProps> = ({
             // Float up and fade
             tl.current.to('.heart', {
                 y: -200,
-                x: (i) => (Math.random() - 0.5) * 100,
+                x: (i: number) => (Math.random() - 0.5) * 100,
                 opacity: 0,
                 duration: 2,
                 stagger: 0.1,
@@ -88,8 +85,8 @@ export const MicroInteraction: React.FC<MicroInteractionProps> = ({
             <div style={posStyle}>
                 {type === 'cursor_click' && (
                     <>
-                        <div className="ripple" style={{ width: 40, height: 40, border: '2px solid #fff', borderRadius: '50%', position: 'absolute', top: -10, left: -10 }} />
-                        <svg className="cursor-arrow" width="30" height="30" viewBox="0 0 24 24" fill="white" stroke="black" strokeWidth="1">
+                        <div className="ripple" style={{ width: 40, height: 40, border: `2px solid ${THEME.colors.white}`, borderRadius: '50%', position: 'absolute', top: -10, left: -10 }} />
+                        <svg className="cursor-arrow" width="30" height="30" viewBox="0 0 24 24" fill={THEME.colors.white} stroke={THEME.colors.black} strokeWidth="1">
                             <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" />
                         </svg>
                     </>
@@ -97,8 +94,8 @@ export const MicroInteraction: React.FC<MicroInteractionProps> = ({
 
                 {type === 'finger_tap' && (
                     <>
-                        <div className="pulse-ring" style={{ width: 60, height: 60, border: '2px solid #aff', borderRadius: '50%', position: 'absolute', top: -15, left: -15 }} />
-                        <div className="finger-dot" style={{ width: 30, height: 30, background: 'rgba(255,255,255,0.5)', borderRadius: '50%' }} />
+                        <div className="pulse-ring" style={{ width: 60, height: 60, border: `2px solid ${THEME.colors.blue}aa`, borderRadius: '50%', position: 'absolute', top: -15, left: -15 }} />
+                        <div className="finger-dot" style={{ width: 30, height: 30, background: `${THEME.colors.white}80`, borderRadius: '50%' }} />
                     </>
                 )}
 

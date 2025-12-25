@@ -1,7 +1,4 @@
-import React, { useRef, useLayoutEffect } from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type DocumentaryOverlayProps = {
     type: 'rec_mode' | 'film_grain' | 'vhs_glitch' | 'timecode' | 'news_ticker_overlay';
@@ -39,17 +36,17 @@ export const DocumentaryOverlay: React.FC<DocumentaryOverlayProps> = ({
 
     // RENDER HELPERS
     const renderRecMode = () => (
-        <AbsoluteFill style={{ border: '2px solid rgba(255,255,255,0.3)', margin: '20px', width: 'calc(100% - 40px)', height: 'calc(100% - 40px)' }}>
+        <AbsoluteFill style={{ border: `2px solid ${THEME.colors.white}4D`, margin: '20px', width: 'calc(100% - 40px)', height: 'calc(100% - 40px)' }}>
             <div style={{ position: 'absolute', top: 20, left: 20, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div className="rec-dot" style={{ width: 20, height: 20, borderRadius: '50%', background: '#ef4444' }} />
-                <span style={{ color: '#fff', fontFamily: 'monospace', fontSize: '24px', fontWeight: 'bold' }}>REC</span>
+                <div className="rec-dot" style={{ width: 20, height: 20, borderRadius: '50%', background: THEME.colors.rose }} />
+                <span style={{ color: THEME.colors.white, fontFamily: THEME.typography.mono.fontFamily, fontSize: '24px', fontWeight: 'bold' }}>REC</span>
             </div>
-            <div style={{ position: 'absolute', bottom: 20, right: 20, color: '#fff', fontFamily: 'monospace' }}>
+            <div style={{ position: 'absolute', bottom: 20, right: 20, color: THEME.colors.white, fontFamily: THEME.typography.mono.fontFamily }}>
                 {text}
             </div>
             {/* Crosshairs */}
-            <div style={{ position: 'absolute', top: '50%', left: '50%', width: 40, height: 2, background: 'rgba(255,255,255,0.5)', transform: 'translate(-50%, -50%)' }} />
-            <div style={{ position: 'absolute', top: '50%', left: '50%', width: 2, height: 40, background: 'rgba(255,255,255,0.5)', transform: 'translate(-50%, -50%)' }} />
+            <div style={{ position: 'absolute', top: '50%', left: '50%', width: 40, height: 2, background: `${THEME.colors.white}80`, transform: 'translate(-50%, -50%)' }} />
+            <div style={{ position: 'absolute', top: '50%', left: '50%', width: 2, height: 40, background: `${THEME.colors.white}80`, transform: 'translate(-50%, -50%)' }} />
         </AbsoluteFill>
     );
 
@@ -66,10 +63,10 @@ export const DocumentaryOverlay: React.FC<DocumentaryOverlayProps> = ({
 
     const renderVhsGlitch = () => (
         <AbsoluteFill className="vhs-container" style={{ pointerEvents: 'none', mixBlendMode: 'color-dodge', overflow: 'hidden' }}>
-            <div className="scanline" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '5px', background: 'rgba(255,255,255,0.5)', boxShadow: '0 0 10px rgba(255,255,255,0.5)' }} />
+            <div className="scanline" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '5px', background: `${THEME.colors.white}80`, boxShadow: `0 0 10px ${THEME.colors.white}80` }} />
             <div style={{
                 position: 'absolute', bottom: 40, left: 40,
-                fontFamily: 'monospace', fontSize: '32px', color: '#fff', textShadow: '2px 0 red, -2px 0 blue'
+                fontFamily: THEME.typography.mono.fontFamily, fontSize: '32px', color: THEME.colors.white, textShadow: '2px 0 red, -2px 0 blue'
             }}>
                 PLAY {'>'}
             </div>
