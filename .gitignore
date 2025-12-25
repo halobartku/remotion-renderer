@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist
+build
+*.log
+.env
+renderer/node_modules
+renderer/uploads
+renderer/outputs
+renderer/web-ui/node_modules
+renderer/web-ui/dist
+node/
