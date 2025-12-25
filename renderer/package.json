@@ -8,7 +8,8 @@
     "render": "node render-cli.js",
     "start": "node server.js",
     "start-server": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "postinstall": "cd web-ui && npm install && npm run build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
