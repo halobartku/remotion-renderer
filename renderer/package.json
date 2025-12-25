@@ -45,6 +45,7 @@
     "zod": "^3.23.0"
   },
   "optionalDependencies": {
+    "@remotion/compositor-win32-x64-msvc": "^4.0.390",
     "@remotion/compositor-darwin-arm64": "^4.0.390",
     "@remotion/compositor-darwin-x64": "^4.0.390",
     "@remotion/compositor-linux-arm64-gnu": "^4.0.390",

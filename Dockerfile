@@ -54,7 +54,7 @@ COPY . .
 
 # 4. Setup Renderer
 WORKDIR /app/renderer
-RUN npm ci
+RUN npm install
 
 # 5. Build the Frontend (Web UI)
 WORKDIR /app/renderer/web-ui
