@@ -114,7 +114,7 @@ export const KineticType: React.FC<KineticTypeProps> = ({
                 textTransform: type === 'hero' ? 'uppercase' : 'none',
                 letterSpacing: '-0.02em',
                 textShadow: '0 10px 30px rgba(0,0,0,0.5)',
-                fontFamily: THEME.typography.header.fontFamily // Fallback if specific header font needed
+                fontFamily: THEME.typography.fontFamily
             }}>
                 {type === 'counter' ? `${prefix}${valStart}${suffix}` : type === 'typewriter' ? '' : text}
             </h1>
