@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type KineticTypeProps = {
     text: string;
@@ -19,7 +20,7 @@ export const KineticType: React.FC<KineticTypeProps> = ({
     text,
     subText,
     type = 'hero',
-    color = '#fff',
+    color = THEME.colors.white,
     fontSize = 80,
     valStart = 0,
     valEnd = 100,
@@ -55,13 +56,7 @@ export const KineticType: React.FC<KineticTypeProps> = ({
         // --- TYPEWRITER ---
         else if (type === 'typewriter') {
             if (mainTextRef.current) {
-                tl.current.to(mainTextRef.current, {
-                    text: { value: text, delimiter: "" }, // Requires TextPlugin, but we'll use simple stepping for now to avoid extra deps if poss
-                    duration: text.length * 0.05,
-                    ease: "none",
-                });
-                // Fallback manual typewriter if TextPlugin missing
-                // Actually safer to assume no TextPlugin for now to keep it lightweight
+                // Manual typewriter effect without TextPlugin
                 const chars = text.split('');
                 mainTextRef.current.innerText = '';
                 chars.forEach((char, i) => {
@@ -89,7 +84,7 @@ export const KineticType: React.FC<KineticTypeProps> = ({
         else if (type === 'warning') {
             tl.current.fromTo(container.current,
                 { backgroundColor: 'rgba(255,0,0,0)' },
-                { backgroundColor: 'rgba(255,0,0,0.2)', duration: 0.5, yoyo: true, repeat: 5 }
+                { backgroundColor: 'rgba(244, 63, 94, 0.2)', duration: 0.5, yoyo: true, repeat: 5 } // Using Theme Rose
             );
             tl.current.from(mainTextRef.current, { scale: 2, opacity: 0, duration: 0.5, ease: 'elastic.out' }, 0);
         }
@@ -108,23 +103,24 @@ export const KineticType: React.FC<KineticTypeProps> = ({
             width: '100%', height: '100%',
             display: 'flex', flexDirection: 'column',
             justifyContent: 'center', alignItems: 'center',
-            fontFamily: 'system-ui, sans-serif',
+            fontFamily: THEME.typography.fontFamily,
             textAlign: 'center'
         }}>
             <h1 ref={mainTextRef} style={{
-                color: type === 'warning' ? '#ff4444' : color,
+                color: type === 'warning' ? THEME.colors.rose : color,
                 fontSize: `${fontSize}px`,
                 fontWeight: 800,
                 margin: 0,
                 textTransform: type === 'hero' ? 'uppercase' : 'none',
                 letterSpacing: '-0.02em',
-                textShadow: '0 10px 30px rgba(0,0,0,0.5)'
+                textShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                fontFamily: THEME.typography.header.fontFamily // Fallback if specific header font needed
             }}>
                 {type === 'counter' ? `${prefix}${valStart}${suffix}` : type === 'typewriter' ? '' : text}
             </h1>
             {subText && (
                 <p ref={subTextRef} style={{
-                    color: 'rgba(255,255,255,0.7)',
+                    color: THEME.colors.gray[400],
                     fontSize: `${fontSize * 0.4}px`,
                     marginTop: '20px',
                     fontWeight: 400

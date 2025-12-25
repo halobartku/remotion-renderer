@@ -139,7 +139,7 @@ export const CryptoCurrencyHUD: React.FC<CryptoCurrencyHUDProps> = ({
                     display: 'flex', flexDirection: 'column', gap: 10
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{ ...THEME.typography.header, fontSize: 24, color: THEME.colors.white }}>
+                        <div style={{ ...THEME.typography.header, fontFamily: THEME.typography.fontFamily, fontSize: 24, color: THEME.colors.white }}>
                             {primaryAsset.symbol}
                         </div>
                         <div style={{
@@ -152,7 +152,7 @@ export const CryptoCurrencyHUD: React.FC<CryptoCurrencyHUDProps> = ({
                         </div>
                     </div>
 
-                    <div style={{ ...THEME.typography.subHeader, fontSize: 32, color: THEME.colors.white }}>
+                    <div style={{ ...THEME.typography.subHeader, fontFamily: THEME.typography.fontFamily, fontSize: 32, color: THEME.colors.white }}>
                         {primaryAsset.price}
                     </div>
 

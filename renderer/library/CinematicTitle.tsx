@@ -2,17 +2,20 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type CinematicTitleProps = {
     text: string;
     styleType?: 'glitch_modern' | 'elegant_serif' | 'bold_impact';
     size?: number;
+    color?: string;
 };
 
 export const CinematicTitle: React.FC<CinematicTitleProps> = ({
     text = "THE GREAT RESET",
     styleType = 'glitch_modern',
-    size = 120
+    size = 120,
+    color = THEME.colors.white
 }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
@@ -39,9 +42,10 @@ export const CinematicTitle: React.FC<CinematicTitleProps> = ({
                 y: (i) => (Math.random() - 0.5) * 10,
                 duration: 0.05,
                 repeat: 10,
-                yoyo: true
+                yoyo: true,
+                color: THEME.colors.rose
             }, 0.2);
-            tl.current.to('.char', { x: 0, y: 0 }, 1);
+            tl.current.to('.char', { x: 0, y: 0, color: color }, 1);
         }
 
         // --- ELEGANT SERIF ---
@@ -79,8 +83,8 @@ export const CinematicTitle: React.FC<CinematicTitleProps> = ({
     // STYLES
     const getFont = () => {
         if (styleType === 'elegant_serif') return '"Playfair Display", serif';
-        if (styleType === 'glitch_modern') return '"Courier New", monospace';
-        return '"Inter", sans-serif'; // Bold Impact
+        if (styleType === 'glitch_modern') return THEME.typography.mono.fontFamily;
+        return THEME.typography.fontFamily; // Bold Impact
     };
 
     return (
@@ -90,7 +94,7 @@ export const CinematicTitle: React.FC<CinematicTitleProps> = ({
             flexDirection: 'column',
             fontFamily: getFont(),
             textTransform: 'uppercase',
-            color: '#fff'
+            color: color
         }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {letters.map((char, i) => (
@@ -98,7 +102,7 @@ export const CinematicTitle: React.FC<CinematicTitleProps> = ({
                         fontSize: `${size}px`,
                         fontWeight: styleType === 'bold_impact' ? 900 : 400,
                         display: 'inline-block',
-                        textShadow: styleType === 'glitch_modern' ? '2px 0 red, -2px 0 cyan' : 'none',
+                        textShadow: styleType === 'glitch_modern' ? `2px 0 ${THEME.colors.rose}, -2px 0 ${THEME.colors.blue}` : 'none',
                         whiteSpace: char === ' ' ? 'pre' : 'normal'
                     }}>
                         {char}
@@ -107,7 +111,7 @@ export const CinematicTitle: React.FC<CinematicTitleProps> = ({
             </div>
 
             {styleType === 'elegant_serif' && (
-                <div style={{ marginTop: '20px', letterSpacing: '5px', fontSize: '20px', opacity: 0.8 }}>
+                <div style={{ marginTop: '20px', letterSpacing: '5px', fontSize: '20px', opacity: 0.8, fontFamily: THEME.typography.fontFamily }}>
                     PRESENTS
                 </div>
             )}

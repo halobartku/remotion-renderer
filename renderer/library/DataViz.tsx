@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect } from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { THEME } from './theme';
 
 type DataVizProps = {
     type: 'radar' | 'heatmap' | 'distribution_bell';
@@ -14,7 +15,7 @@ export const DataViz: React.FC<DataVizProps> = ({
     type = 'radar',
     data = [80, 40, 90, 20, 60],
     labels = ["IQ", "EQ", "Risk", "Patience", "Luck"],
-    color = '#8b5cf6'
+    color = THEME.colors.purple
 }) => {
     const frame = useCurrentFrame();
     const { fps } = useVideoConfig();
@@ -36,7 +37,7 @@ export const DataViz: React.FC<DataVizProps> = ({
                 ctx.clearRect(0, 0, 600, 600);
 
                 // Draw Web
-                ctx.strokeStyle = '#334155';
+                ctx.strokeStyle = THEME.colors.gray[700];
                 ctx.lineWidth = 2;
                 [0.2, 0.4, 0.6, 0.8, 1].forEach(scale => {
                     ctx.beginPath();
@@ -68,8 +69,8 @@ export const DataViz: React.FC<DataVizProps> = ({
                     if (progress === 1) {
                         const lx = center.x + Math.cos(angle) * (radius + 40);
                         const ly = center.y + Math.sin(angle) * (radius + 40);
-                        ctx.fillStyle = '#fff';
-                        ctx.font = '20px monospace';
+                        ctx.fillStyle = THEME.colors.white;
+                        ctx.font = `20px ${THEME.typography.mono.fontFamily.replace(/"/g, '')}`; // Remove quotes for canvas
                         ctx.fillText(labels[i] || `P${i}`, lx - 20, ly);
                     }
                 });
@@ -106,12 +107,13 @@ export const DataViz: React.FC<DataVizProps> = ({
             {Array.from({ length: 25 }).map((_, i) => {
                 // Random hot/cold colors
                 const val = Math.random();
-                const cellColor = val > 0.6 ? '#10b981' : val > 0.3 ? '#334155' : '#ef4444';
+                const cellColor = val > 0.6 ? THEME.colors.emerald : val > 0.3 ? THEME.colors.gray[700] : THEME.colors.rose;
                 return (
                     <div key={i} className="heat-cell" style={{
                         background: cellColor, borderRadius: '8px',
                         display: 'flex', justifyContent: 'center', alignItems: 'center',
-                        color: 'rgba(255,255,255,0.5)', fontSize: '12px'
+                        color: 'rgba(255,255,255,0.5)', fontSize: '12px',
+                        fontFamily: THEME.typography.mono.fontFamily
                     }}>
                         {(val * 100).toFixed(0)}%
                     </div>
